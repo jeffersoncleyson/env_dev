@@ -1,0 +1,79 @@
+version: "3.0"
+
+volumes:
+  mongo-keys:
+
+networks:
+  mongo-cluster:
+    driver: bridge
+
+services:
+
+####################################
+##### CRIA A CHAVE COM OPEN SSL ####
+####################################
+  mongo-keys:
+    image: depop/openssl-bats
+    volumes:
+      - mongo-keys:/mongo-conf
+    command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
+
+####################################
+##### PRIMARIO #####################
+####################################
+  mongo-primary:
+    image: mongo:latest
+    volumes:
+      - mongo-keys:/opt/keyfile
+      - ./volumes/data/mongo-data-0:/data/db
+      - ./volumes/data/mongo-config-0:/data/configdb
+    env_file:
+      ./mongod.env
+    ports:
+      - 27017:27017
+    command: 'mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet rs0 --bind_ip_all'
+    depends_on:
+        - mongo-keys
+    networks:
+      - mongo-cluster
+  
+####################################
+##### NODE 1 #######################
+####################################
+  mongo-worker-1:
+    image: mongo:latest
+    volumes:
+      - mongo-keys:/opt/keyfile
+      - ./volumes/data/mongo-data-1:/data/db
+      - ./volumes/data/mongo-config-1:/data/configdb
+    env_file:
+      ./mongod.env
+    ports:
+      - 27018:27017
+    command: 'mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet rs0 --bind_ip_all'
+    depends_on:
+        - mongo-keys
+    networks:
+      - mongo-cluster
+  
+####################################
+##### ARBITER ######################
+####################################
+  mongo-arbiter:
+    image: mongo:latest
+    volumes:
+      - mongo-keys:/opt/keyfile
+      - ./volumes/data/mongo-data-2:/data/db
+      - ./volumes/data/mongo-config-2:/data/configdb
+    env_file:
+      ./mongod.env
+    ports:
+      - 27019:27017
+    command: 'mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet rs0 --bind_ip_all'
+    depends_on:
+        - mongo-keys
+    networks:
+      - mongo-cluster
+
+## mongodb://root:password@192.168.1.70:27017,192.168.1.70:27018,192.168.1.70:27019/?replicaSet=rs0
+

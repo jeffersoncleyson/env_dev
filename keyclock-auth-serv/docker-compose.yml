@@ -1,0 +1,40 @@
+version: "3.0"
+
+volumes:
+  mongo-keys:
+
+networks:
+  auth-serv:
+    driver: bridge
+
+services:
+
+####################################
+##### DATABASE #####################
+####################################
+  database-keycloak:
+    image: mariadb
+    volumes:
+      - ./volumes/mariadb:/var/lib/mysql
+    env_file:
+      ./database.env
+    ports:
+      - 3306:3306
+    networks:
+      - auth-serv
+
+
+####################################
+##### AUTHORIZATION SERVER #########
+####################################
+
+  keycloack-auth-serv:
+    image: jboss/keycloak
+    env_file:
+      ./keycloak.env
+    ports:
+      - 8080:8080
+    depends_on:
+      - database-keycloak
+    networks:
+      - auth-serv
