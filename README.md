@@ -1,4 +1,4 @@
-# Ambiente de Desenvolvimento
+# Ambiente de Desenvolvimento Linux
 
 Para utilizar as aplicações de desenvolvimento separadas abaixo é necessário seguir os tópicos 1 e 2.
 

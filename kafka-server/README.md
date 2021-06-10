@@ -26,7 +26,14 @@ O Apache ZooKeeper é um serviço centralizado para manter informações de conf
 ## KafDrop
 #
 
-Kafdrop é um interface web para visualizar os tópicos do kafka e navegar nos grupos dos consumidores. A ferramenta mostra informações como brokers, tópicos, partições, consumidores, e deixa ver mensagens. Para consultar informações desse projeto open-source acessar [**github**](https://github.com/obsidiandynamics/kafdrop)
+Kafdrop é um interface web para visualizar os tópicos do kafka e navegar nos grupos dos consumidores. A ferramenta mostra informações como brokers, tópicos, partições, consumidores, e deixa ver mensagens. Para consultar informações desse projeto open-source acessar [**github**](https://github.com/obsidiandynamics/kafdrop)</br>
+
+**Para consultar os Tópicos disponíveis acessar o navegador com o endereço abaixo:**</br>
+
+```
+http://localhost:19000/
+```
+
 
 #
 ### *Docker compose foi feito com base em dois tutorias da internet [LINK1](https://medium.com/azure-na-pratica/apache-kafka-kafdrop-docker-compose-montando-rapidamente-um-ambiente-para-testes-606cc76aa66) e [LINK2](https://medium.com/trainingcenter/apache-kafka-codifica%C3%A7%C3%A3o-na-pratica-9c6a4142a08f)*
