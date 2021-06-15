@@ -30,6 +30,8 @@ services:
 
   keycloack-auth-serv:
     image: jboss/keycloak
+    volumes:
+      - ./volumes/keycloak:/var/lib/keycloak/data
     env_file:
       ./keycloak.env
     ports:

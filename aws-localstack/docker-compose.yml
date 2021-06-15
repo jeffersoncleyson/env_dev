@@ -1,0 +1,26 @@
+version: '3.0'
+
+
+networks:
+    aws-serv:
+      driver: bridge
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    environment: 
+      - DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=sns,sqs
+      - HOST_TMP_FOLDER=/tmp/localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      # - DEBUG=1
+      # - LS_LOG=debug
+    ports:
+      - '4566-4597:4566-4597'
+    volumes:
+      - ./volumes/localstack/temp:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./localstack/init.sh:/docker-entrypoint-initaws.d/init.sh
+    networks: 
+      - aws-serv
