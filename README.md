@@ -1,11 +1,13 @@
 # Ambiente de Desenvolvimento Linux
 
-Para utilizar as aplicações de desenvolvimento separadas abaixo é necessário seguir os tópicos 1 e 2.
+Para utilizar as aplicações de desenvolvimento separadas abaixo é necessário seguir os tópicos 1, 2 e 3.
 
+- LocalStack: Ambiente AWS Local
 - MondoDB : Banco de dados NoSQL
 - Keycloak : Authorization Server
 - Redis : Armazenamento de dados na memória (key-value)
 - Kafka : Mensageria Server (Streaming data)
+- MongoCompass: Visualização do MongoDB
 
 
 #
@@ -83,3 +85,28 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 docker-compose --version
 ```
+
+#
+## 3 - Mongo Compass
+#
+
+* Download MongoDB Compass
+
+```
+wget https://downloads.mongodb.com/compass/mongodb-compass_1.26.1_amd64.deb
+```
+
+* Instalação
+```
+sudo dpkg -i mongodb-compass_1.26.1_amd64.deb
+```
+
+* Iniciar
+
+```
+mongodb-compass
+```
+
+* ou digitar na barra de pesquisa do ubuntu "Mongo Compass" </br></br>
+
+* Referencia do **[Mongo Compass](https://docs.mongodb.com/compass/current/install/)**
