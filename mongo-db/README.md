@@ -2,50 +2,53 @@
 
 Mongo cluster, deploying a ReplicaSet
 
+![replica set status](./img/replica-set-nodes.jpg?raw=true "Replica set status")
+
+
 ### Inicializando o compose
 ```
 sudo docker-compose -f docker-compose.ym up -d
 ```
 
-### Conectando no primeiro NÓ
+### Verificando o estado do Cluster
 ```
-sudo docker-compose -f docker-compose.yml exec mongo-primary mongo -u "admin" -p "qwe123"
-
-```
-
-### Iniciando o NÓ para ReplicaSet
-```
-rs.initiate({"_id" : "rs0","members" : [{"_id" : 0,"host" : "mongo-primary:27017"},{"_id" : 1,"host" : "mongo-worker-1:27017"},{"_id" : 2,"host" : "mongo-worker-2:27017", arbiterOnly: true }]});
+sudo docker-compose -f docker-compose.ym ps
 ```
 
-### Setando a prioridade do NÓ sobre os demais
-```
-conf = rs.config();
-conf.members[0].priority = 2;
-conf.members[1].priority = 0.5;
-rs.reconfig(conf);
-```
+![Status](./img/status.png?raw=true "Status")
 
-### Criando um usuário ADM para o Cluster
+### Conectando no Cluster
 ```
-use admin;
-db.createUser({user: "cluster_admin",pwd: "password",roles: [ { role: "userAdminAnyDatabase", db: "admin" },  { "role" : "clusterAdmin", "db" : "admin" } ]});
-db.auth("cluster_admin", "password");
-```
+sudo docker-compose -f docker-compose.yml exec mongo1 mongo "mongodb://mongo1:30001,mongo2:30002,mongo3:30003/test?replicaSet=rs0" -u admin -p "qwe123" --authenticationDatabase admin
 
-### Criando uma collection no Banco de dados
-```
-use my_data;
-db.createUser({user: "my_user",pwd: "password",roles: [ { role: "readWrite", db: "my_data" } ]});
-db.createCollection('my_collection');
-```
-
-### Verificando as credenciais criadas
-```
-docker-compose exec mongo-primary mongo -u "my_user" -p "password" --authenticationDatabase "my_data"
 ```
 
 ### Finalizando o compose
 ```
 sudo docker-compose -f docker-compose.ym down
 ```
+
+### Abri no Mongo Compass </br></br>
+
+* Antes de realizar os procedimentos abaixo é necessário adicionar a seguinte linha no arquivo hosts do sistema operacional. Para S.O Linux se encontra no caminho "/etc/hosts"
+```
+127.0.0.1 localhost mongo1 mongo2 mongo3
+```
+
+* Clicar em "New Connection" e colar a linha abaixo.
+```
+mongodb://mongo1:30001,mongo1:30002,mongo1:30003/test?replicaSet=rs0
+```
+
+* Clicar em "Fill in connection fields individually"
+
+![Fill in connection fields individually](./img/newConnection.png?raw=true "Fill in connection fields individually")
+
+* Veriricar se os campos estão como as imagens abaixo.
+
+![Hostname](./img/tab1.png?raw=true "Hostname")
+![More Options](./img/tab2.png?raw=true "More Options")
+
+### Todas etapas anteriores concluídas
+
+![Cluster Info](./img/clusterInfo.png?raw=true "Cluster Info")
