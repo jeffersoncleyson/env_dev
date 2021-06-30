@@ -11,7 +11,7 @@ services:
     env_file:
       ./localstack.env
     ports:
-      - '4566-4597:4566-4597'
+      - '4566:4566'
     volumes:
       - ./volumes/localstack/temp:/tmp/localstack
       - /var/run/docker.sock:/var/run/docker.sock

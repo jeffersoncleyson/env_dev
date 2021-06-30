@@ -8,6 +8,7 @@ Para utilizar as aplicações de desenvolvimento separadas abaixo é necessário
 - Redis : Armazenamento de dados na memória (key-value)
 - Kafka : Mensageria Server (Streaming data)
 - MongoCompass: Visualização do MongoDB
+- SonarQube: Para qualidade de desenvolvimento de código.
 
 
 #
